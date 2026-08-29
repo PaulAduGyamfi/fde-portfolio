@@ -1,14 +1,14 @@
-cases=19
-intent_accuracy=100.0%
-customer_id_accuracy=89.5%
-urgency_accuracy=89.5%
-needs_human_review_accuracy=94.7%
-missing_information_pass=89.5%
+cases=20
+intent_accuracy=95.0%
+customer_id_accuracy=100.0%
+urgency_accuracy=85.0%
+needs_human_review_accuracy=90.0%
+missing_information_pass=95.0%
 
 FAILURES
-case_003 ['adversarial'] customer_id: expected='C-77' actual='C- 77'
-case_004 ['normal'] customer_id: expected='C-59' actual=None | urgency: expected='high' actual='normal'
-case_005 ['normal'] missing_information: expected at least {'customer_id'}, got set()
-case_008 ['edge'] needs_human_review: expected=True actual=False
-case_015 ['edge'] urgency: expected='low' actual='normal'
-case_019 ['edge'] missing_information: expected at least {'description of the issue'}, got {'customer_id'}
+case_010 ['adversarial'] intent: expected='refund_status' actual='billing_question'
+case_011 ['adversarial'] urgency: expected='normal' actual='high'
+case_015 ['normal'] needs_human_review: expected=True actual=False
+case_017 ['edge'] needs_human_review: expected=True actual=False
+case_018 ['edge'] urgency: expected='low' actual='normal'
+case_020 ['edge'] urgency: expected='normal' actual='low' | missing_information: expected at least {'customer_id', 'description of the issue'}, got {'customer_id'}

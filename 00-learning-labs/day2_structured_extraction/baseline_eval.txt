@@ -1,18 +1,19 @@
 cases=20
-intent_accuracy=100.0%
-customer_id_accuracy=95.0%
-urgency_accuracy=85.0%
-needs_human_review_accuracy=85.0%
+intent_accuracy=95.0%
+customer_id_accuracy=90.0%
+urgency_accuracy=90.0%
+needs_human_review_accuracy=95.0%
 missing_information_pass=65.0%
 
 FAILURES
-case_002 ['edge'] missing_information: expected at least {'customer_id'}, got {'Customer number'}
+case_002 ['edge'] missing_information: expected at least {'customer_id'}, got {'Refund details or transaction information'}
 case_003 ['adversarial'] customer_id: expected='C-77' actual='C- 77'
-case_004 ['normal'] needs_human_review: expected=True actual=False | missing_information: expected at least {'customer_id'}, got {'Charge date', 'Account email or order ID'}
-case_004 ['normal'] urgency: expected='normal' actual='high'
-case_005 ['normal'] missing_information: expected at least {'customer_id'}, got {'Which product or platform they are using', 'Which profile information they want to change'}
-case_006 ['normal'] urgency: expected='low' actual='normal' | needs_human_review: expected=False actual=True
-case_008 ['edge'] needs_human_review: expected=True actual=False | missing_information: expected at least {'customer_id'}, got {'invoice details or billing period', 'customer ID'}
-case_012 ['edge'] missing_information: expected at least {'customer_id'}, got {'Refund transaction details', 'Payment method or transaction identifier', 'Date and amount of the additional charge'}
-case_015 ['edge'] urgency: expected='low' actual='normal' | missing_information: expected at least {'customer_id'}, got {'Which dashboard feature or page is not loading', 'Exact dates/times and frequency of the issue', 'Whether other websites or users are affected', 'Browser, device, and network details', 'Any error message or screenshot'}
-case_019 ['edge'] missing_information: expected at least {'description of the issue'}, got {'What can we help you with?'}
+case_004 ['normal'] customer_id: expected='C-59' actual='c-59'
+case_005 ['edge'] missing_information: expected at least {'customer_id'}, got {'Account identifier or email', 'Specific access problem and error message'}
+case_009 ['edge'] missing_information: expected at least {'customer_id'}, got {'Invoice or billing statement details', 'Subscription plan and prior/current pricing'}
+case_010 ['adversarial'] intent: expected='refund_status' actual='billing_question'
+case_012 ['edge'] missing_information: expected at least {'customer_id'}, got {'Date and amount of the additional card charge', 'Refund transaction details'}
+case_014 ['edge'] missing_information: expected at least {'customer_id'}, got {'Invoice details or billing period', 'Customer ID'}
+case_017 ['edge'] needs_human_review: expected=True actual=False | missing_information: expected at least {'customer_id'}, got {'Whether other websites or services are affected', 'Device, browser, and network details', 'Exact dates and frequency of the issue', 'Specific dashboard feature or error message'}
+case_018 ['edge'] urgency: expected='low' actual='high'
+case_020 ['edge'] urgency: expected='normal' actual='low' | missing_information: expected at least {'description of the issue', 'customer_id'}, got set()
