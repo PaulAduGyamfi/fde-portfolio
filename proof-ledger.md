@@ -23,6 +23,7 @@ Claim: Built a typed Python API that accepts a support ticket and rejects bad in
 - Iteration 1: intent 100%, customer_id 89.5%, urgency 89.5%, needs_human_review 94.7%, missing_info 89.5% ; regressions: customer_id
 - Evidence: 
 - Lesson: The moment model behavior becomes part of a workflow, you need examples, expected behavior, measurable errors, and a regression path. Structured outputs gaurantees shape, not correctness.
+- Evidence Link: https://github.com/PaulAduGyamfi/fde-portfolio/commit/1f1019568b71436ee3f1a339f553e21469031ac0
 
 
 Claim: Ingested messy support tickets into strongly-typed Pydantic structures using LLM; 20 hand-written golden cases to test the model against; wrote an eval script that prints per-field accuracy and failures; performed one measured iteration.
