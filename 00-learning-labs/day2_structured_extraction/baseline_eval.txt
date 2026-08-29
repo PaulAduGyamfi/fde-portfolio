@@ -1,0 +1,18 @@
+cases=20
+intent_accuracy=100.0%
+customer_id_accuracy=95.0%
+urgency_accuracy=85.0%
+needs_human_review_accuracy=85.0%
+missing_information_pass=65.0%
+
+FAILURES
+case_002 ['edge'] missing_information: expected at least {'customer_id'}, got {'Customer number'}
+case_003 ['adversarial'] customer_id: expected='C-77' actual='C- 77'
+case_004 ['normal'] needs_human_review: expected=True actual=False | missing_information: expected at least {'customer_id'}, got {'Charge date', 'Account email or order ID'}
+case_004 ['normal'] urgency: expected='normal' actual='high'
+case_005 ['normal'] missing_information: expected at least {'customer_id'}, got {'Which product or platform they are using', 'Which profile information they want to change'}
+case_006 ['normal'] urgency: expected='low' actual='normal' | needs_human_review: expected=False actual=True
+case_008 ['edge'] needs_human_review: expected=True actual=False | missing_information: expected at least {'customer_id'}, got {'invoice details or billing period', 'customer ID'}
+case_012 ['edge'] missing_information: expected at least {'customer_id'}, got {'Refund transaction details', 'Payment method or transaction identifier', 'Date and amount of the additional charge'}
+case_015 ['edge'] urgency: expected='low' actual='normal' | missing_information: expected at least {'customer_id'}, got {'Which dashboard feature or page is not loading', 'Exact dates/times and frequency of the issue', 'Whether other websites or users are affected', 'Browser, device, and network details', 'Any error message or screenshot'}
+case_019 ['edge'] missing_information: expected at least {'description of the issue'}, got {'What can we help you with?'}
