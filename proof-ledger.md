@@ -18,7 +18,7 @@ Claim: Built a typed Python API that accepts a support ticket and rejects bad in
 
 - Artifact: 00-learning-labs/day2_structured_extraction
 - Dataset: 20 golden cases
-- Baseline: intent 95%, customer_id 90%, urgency 90%, needs_human_review 90%, missing_info 95% 
+- Baseline: intent 95%, customer_id 90%, urgency 90%, needs_human_review 90%, missing_info 65% 
 - Change made: instructed the model to use field names from schema, and not create its own
 - Iteration 1: intent 95%, customer_id 100%, urgency 85%, needs_human_review 95%, missing_info 95% ; regressions: urgency
 - Evidence: 
