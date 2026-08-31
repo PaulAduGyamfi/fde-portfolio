@@ -27,3 +27,13 @@ Claim: Built a typed Python API that accepts a support ticket and rejects bad in
 
 
 Claim: Ingested messy support tickets into strongly-typed Pydantic structures using LLM; 20 hand-written golden cases to test the model against; wrote an eval script that prints per-field accuracy and failures; performed one measured iteration.
+
+## Day 3 - Tools/ function calling, Agents, Traces and observability,
+**Date:** 2026-08-30
+
+- Artifact: 00-learning-labs/day3_tool_agent
+- Test: 11-scenario trace review
+- Lesson: the model can never do anything you did not write a tool for and tool descriptions are how the model decides when to call. You judge the agent by its trace (what it actually called), not by how nice its final answer sounds.
+- Evidence Link:
+
+Claim: Implemented a tool-using agent with two read-only tools. Bound its capabilities in code and judged it by its trace.
