@@ -34,6 +34,6 @@ Claim: Ingested messy support tickets into strongly-typed Pydantic structures us
 - Artifact: 00-learning-labs/day3_tool_agent
 - Test: 11-scenario trace review
 - Lesson: the model can never do anything you did not write a tool for and tool descriptions are how the model decides when to call. You judge the agent by its trace (what it actually called), not by how nice its final answer sounds.
-- Evidence Link:
+- Evidence Link: https://github.com/PaulAduGyamfi/fde-portfolio/commit/418196666711720970df917cbde4f03a6ac5a29d
 
 Claim: Implemented a tool-using agent with two read-only tools. Bound its capabilities in code and judged it by its trace.
