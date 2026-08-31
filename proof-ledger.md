@@ -37,3 +37,13 @@ Claim: Ingested messy support tickets into strongly-typed Pydantic structures us
 - Evidence Link: https://github.com/PaulAduGyamfi/fde-portfolio/commit/418196666711720970df917cbde4f03a6ac5a29d
 
 Claim: Implemented a tool-using agent with two read-only tools. Bound its capabilities in code and judged it by its trace.
+
+## Day 4 - CaseFlow Package Structure/ Extraction contract
+**Date:** 2026-08-31
+
+- Artifact: 01-caseflow-agent/
+- Dataset: 20 golden cases
+- Lesson: I design the contract before the prompt. Structured outputs gaurantees shape.
+- Evidence Link: https://github.com/PaulAduGyamfi/fde-portfolio/commit/37cd22ffed85883f63a8146f0825e7f39309a652
+
+Claim: EmailIn/Extraction contract (schemas.py) written and committed before extract.py's instructions existed. 20 golden-case emails (evals/cases.jsonl) written with full expected blocks before extractor instructions were written or the model was called.
