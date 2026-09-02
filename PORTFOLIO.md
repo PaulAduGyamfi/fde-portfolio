@@ -5,4 +5,6 @@
 | 2 | 2026-08-29 | ServiceOps | Structured extraction, golden set, eval + one iteration  | Structured outputs gaurantees shape, not correctness | https://github.com/PaulAduGyamfi/fde-portfolio/commit/4e17d65fa63243bf16312e3538062f5bea2c6e01 |
 | 3 | 2026-08-30 | ServiceOps | Tool-using agent, Tracing & Observability  | Tool descriptions are how the model decides when to call | https://github.com/PaulAduGyamfi/fde-portfolio/commit/418196666711720970df917cbde4f03a6ac5a29d |
 | 4 | 2026-08-31 | CaseFlow | Package structure, extended typed contract, second golden set (20 emails) | I design the contract before the prompt. | https://github.com/PaulAduGyamfi/fde-portfolio/commit/37cd22ffed85883f63a8146f0825e7f39309a652 |
+| 5 | 2026-09-01 | CaseFlow | Extractor + FastAPI /extract endpoint, async eval harness, baseline v1 on 20 golden cases (intent 95%, urgency 75%, account_id 90%, review 75%) | Model confidence is not correctness — 10 of 12 failures scored 0.98+ | https://github.com/PaulAduGyamfi/fde-portfolio/commit/9ce3d6753aea62fad7d3619a2d9e3ce3f0dbf3a5 |
+
 

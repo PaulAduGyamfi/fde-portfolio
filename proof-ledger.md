@@ -47,3 +47,14 @@ Claim: Implemented a tool-using agent with two read-only tools. Bound its capabi
 - Evidence Link: https://github.com/PaulAduGyamfi/fde-portfolio/commit/37cd22ffed85883f63a8146f0825e7f39309a652
 
 Claim: EmailIn/Extraction contract (schemas.py) written and committed before extract.py's instructions existed. 20 golden-case emails (evals/cases.jsonl) written with full expected blocks before extractor instructions were written or the model was called.
+
+## Day 5 - CaseFlow /extract endpoint and its eval + baseline v1
+**Date:** 2026-09-01
+
+- Artifact: 01-caseflow-agent/ (caseflow/extract.py, caseflow/api.py, caseflow/llm.py, evals/run_extraction_eval.py)
+- Dataset: 20 golden cases (5 normal / 11 edge / 4 adversarial)
+- Baseline v1: intent 95%, urgency 75%, account_id 90%, needs_human_review 75% — 12 of 20 cases failed at least one field
+- Failure clusters: account_id not normalized to ACC- form ("77385", "AC8831"); billing_question vs refund_status boundary; urgency low vs normal boundary; needs_human_review under-triggers on frustrated/blocked customers
+- Change made: none yet — this day is the honest unturned baseline
+- Lesson: Self-reported confidence is not a quality signal. Ten of the twelve failing cases came back at 0.98-0.99 confidence, so confidence cannot be used as a routing or auto-approve gate; only the eval can. A golden set is fallible too. An eval failure is a claim that model and label disagree — you triage which one is wrong before you touch the prompt.
+- Evidence Link: https://github.com/PaulAduGyamfi/fde-portfolio/commit/9ce3d6753aea62fad7d3619a2d9e3ce3f0dbf3a5
