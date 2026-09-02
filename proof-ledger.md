@@ -58,3 +58,30 @@ Claim: EmailIn/Extraction contract (schemas.py) written and committed before ext
 - Change made: none yet — this day is the honest unturned baseline
 - Lesson: Self-reported confidence is not a quality signal. Ten of the twelve failing cases came back at 0.98-0.99 confidence, so confidence cannot be used as a routing or auto-approve gate; only the eval can. A golden set is fallible too. An eval failure is a claim that model and label disagree — you triage which one is wrong before you touch the prompt.
 - Evidence Link: https://github.com/PaulAduGyamfi/fde-portfolio/commit/9ce3d6753aea62fad7d3619a2d9e3ce3f0dbf3a5
+
+## Day 6 (Part 1 of 2) — 2026-09-02 — Failure analysis, calibration check, needs_human_review fix
+- Artifact: 01-caseflow-agent/caseflow (extract.py instructions)
+- Calibration finding: inconclusive — intent had no variance to test against (100% baseline), and
+  the confidence distribution was heavily skewed (19/20 cases >=0.85). Separately confirmed the
+  model reports 0.98-0.99 confidence on cases where OTHER fields (urgency, needs_human_review,
+  account_id) are wrong, including adversarial cases — confidence should not be trusted as a proxy
+  for overall extraction correctness.
+- Change made: added an explicit "unsupported action" trigger to needs_human_review, with 4 concrete
+  examples (update, reset, cancel, send-a-document), based on 4/5 failing cases sharing that exact
+  pattern (case_018, phishing, correctly excluded as a different category).
+- Result: 4 of 5 originally-diagnosed cases (001, 003, 005, 009) fixed. needs_human_review_accuracy
+  held flat at 75% because 3 new false positives (002, 004, 012) and 1 new miss (017) appeared —
+  NOT YET DIAGNOSED, carried forward as an open item.
+- Also observed: case_015 (intent) and case_009 (urgency) each flipped correct/incorrect across runs
+  with no relevant instruction change touching those fields — evidence the model's outputs are
+  genuinely non-deterministic at this sample size, not purely a function of prompt changes.
+- Separate change (isolated to its own run): added an account_id formatting/normalization
+  instruction — account_id_accuracy 90% -> 100%, cleanly isolated by running it as its own iteration.
+- Regressions: intent_accuracy 95% -> 90% (net), partially explained by non-determinism (see above),
+  not fully attributable to either instruction change yet.
+- FDE lesson: a flat top-line percentage can hide a completely different set of underlying failures;
+  and at small sample sizes, LLM run-to-run variance can look identical to a prompt-caused regression
+  unless you check for it explicitly.
+- Evidence: https://github.com/PaulAduGyamfi/fde-portfolio/commit/fb28254fa7e67d130b0edbf85e2b3a90493272c6
+- Open for Day 6 Part 2 / later: diagnose 002/004/012 false positives; consider whether temperature
+  can be pinned lower to reduce noise before trusting future before/after comparisons.

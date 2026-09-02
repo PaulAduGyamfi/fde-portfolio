@@ -6,5 +6,6 @@
 | 3 | 2026-08-30 | ServiceOps | Tool-using agent, Tracing & Observability  | Tool descriptions are how the model decides when to call | https://github.com/PaulAduGyamfi/fde-portfolio/commit/418196666711720970df917cbde4f03a6ac5a29d |
 | 4 | 2026-08-31 | CaseFlow | Package structure, extended typed contract, second golden set (20 emails) | I design the contract before the prompt. | https://github.com/PaulAduGyamfi/fde-portfolio/commit/37cd22ffed85883f63a8146f0825e7f39309a652 |
 | 5 | 2026-09-01 | CaseFlow | Extractor + FastAPI /extract endpoint, async eval harness, baseline v1 on 20 golden cases (intent 95%, urgency 75%, account_id 90%, review 75%) | Model confidence is not correctness — 10 of 12 failures scored 0.98+ | https://github.com/PaulAduGyamfi/fde-portfolio/commit/9ce3d6753aea62fad7d3619a2d9e3ce3f0dbf3a5 |
+| 6 | 2026-09-02 | CaseFlow | Diagnosed and fixed 4/5 needs_human_review misses via an "unsupported action" rule; found 3 new false positives (open); found genuine model non-determinism across repeated runs; isolated an account_id formatting fix to 100% | I diagnose from evidence, isolate variables one at a time, and recognize noise instead of over-attributing every change to my own fix | https://github.com/PaulAduGyamfi/fde-portfolio/commit/fb28254fa7e67d130b0edbf85e2b3a90493272c6 |
 
 
