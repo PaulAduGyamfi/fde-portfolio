@@ -1,0 +1,23 @@
+cases=20
+intent_accuracy=100.0%
+urgency_accuracy=75.0%
+account_id_accuracy=90.0%
+needs_human_review_accuracy=75.0%
+
+FAILURES (id, tags, confidence)
+case_001 ['normal'] 0.99 ['needs_human_review: expected=True actual=False']
+case_003 ['edge'] 0.99 ["account_id: expected='ACC-77385' actual='77385'", 'needs_human_review: expected=True actual=False']
+case_004 ['edge'] 0.95 ["account_id: expected='ACC-8831' actual='AC8831'"]
+case_005 ['edge'] 0.98 ['needs_human_review: expected=True actual=False']
+case_007 ['edge'] 0.99 ["urgency: expected='normal' actual='low'", 'missing_information incomplete']
+case_008 ['adversarial'] 0.99 ['missing_information incomplete']
+case_009 ['normal'] 0.99 ["urgency: expected='normal' actual='low'", 'needs_human_review: expected=True actual=False']
+case_010 ['adversarial'] 0.99 ["urgency: expected='normal' actual='high'"]
+case_012 ['edge'] 0.78 ['missing_information incomplete']
+case_014 ['edge'] 0.98 ["urgency: expected='normal' actual='high'", 'missing_information incomplete']
+case_018 ['edge'] 0.99 ["urgency: expected='normal' actual='low'", 'needs_human_review: expected=True actual=False']
+
+CALIBRATION (intent accuracy by confidence bucket)
+<0.6: no cases
+0.6-0.85: 1/1 = 100.0%
+>=0.85: 19/19 = 100.0%
