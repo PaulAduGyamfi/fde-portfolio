@@ -1,4 +1,4 @@
-from agents import Agent, Runner
+from agents import Agent, Runner, function_tool
 from .schemas import EmailIn, Extraction
 from . import llm #noqa
 
@@ -16,6 +16,22 @@ extractor = Agent(
     "...misformatted id may look like AC3232 or sometimes just the digits, look for terms like id, account id, AC, ACC. sometimes misformatted ids might be missing the dash"
     ),
     output_type=Extraction, 
+)
+
+investigator = Agent(
+    name="CaseFlow Investigator",
+    instructions=(
+        "You investigate support requests using the tools available to you."
+        "Before writing a draft reply, you must first call get_account and, if the request..."
+        "...concerns an existing case, list_open_cases — never draft a response using facts you..."
+        "...have not actually looked up."
+        "create_draft_reply only stores a draft for a human to review and send later; calling it..."
+        "...does NOT send anything to the customer. Never state or imply in your response that a ..."
+        "...message was sent, a refund was issued, an account was changed, or any action was ..."
+        "...completed — the only things you can do are read account/case data and propose a draft. "
+        "If the account or case cannot be found, say so plainly instead of guessing."
+    ),
+    tools=[get_account, list_open_cases, create_draft_reply],
 )
 
 async def extract(email: EmailIn) -> Extraction:
