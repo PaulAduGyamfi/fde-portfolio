@@ -85,3 +85,17 @@ Claim: EmailIn/Extraction contract (schemas.py) written and committed before ext
 - Evidence: https://github.com/PaulAduGyamfi/fde-portfolio/commit/fb28254fa7e67d130b0edbf85e2b3a90493272c6
 - Open for Day 6 Part 2 / later: diagnose 002/004/012 false positives; consider whether temperature
   can be pinned lower to reduce noise before trusting future before/after comparisons.
+
+  ## Day 6 (Part 2/2) — 2026-09-03 — Investigator agent, tool functions, unit tests
+- Artifact: 01-caseflow-agent/caseflow (agent.py, tools.py, tests/test_tools.py)
+- Built: investigator agent — must call get_account/list_open_cases before drafting, never claims a
+  send/refund/change occurred (create_draft_reply only stores a draft for human review).
+- Bug fixed: @function_tool objects aren't directly callable (confirmed via SDK issue #708) — split
+  each tool into a plain _function + thin decorated wrapper; same fix applied to Day 9's workflow.py.
+- Bug fixed: relative import in tests/ failed (no shared parent package with serviceops) — switched
+  to absolute import.
+- Tests: 3/3 passing (get_account, list_open_cases, create_draft_reply — valid/invalid/empty ID each).
+- FDE lesson: don't test against a third-party SDK's internal object shape — separate business logic
+  from framework decoration so it stays testable regardless of the wrapper.
+- Evidence: https://github.com/PaulAduGyamfi/fde-portfolio/commit/b5e10138049804ec6af1cbb532afd180370cd6fd
+- Open, carried to Day 7: create_draft_reply doesn't check account existence before storing a draft.
