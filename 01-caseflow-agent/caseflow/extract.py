@@ -1,5 +1,6 @@
 from agents import Agent, Runner, function_tool
 from .schemas import EmailIn, Extraction
+from .tools import get_account, list_open_cases, create_draft_reply
 from . import llm #noqa
 
 extractor = Agent( 
@@ -38,3 +39,14 @@ async def extract(email: EmailIn) -> Extraction:
     text = f"From: {email.from_address}\nSubject: {email.subject}\n\n{email.body}" 
     result = await Runner.run(extractor, text, max_turns=2)
     return result.final_output
+
+async def extract_github_issue(issue):
+    email = EmailIn(
+        message_id=str(issue["number"]), 
+        from_address="github@issues",
+        subject=issue["title"], 
+        body=issue.get("body") or ""
+        )
+    return (await extract(email)).model_dump()
+
+    
