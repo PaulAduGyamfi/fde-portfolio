@@ -99,3 +99,12 @@ Claim: EmailIn/Extraction contract (schemas.py) written and committed before ext
   from framework decoration so it stays testable regardless of the wrapper.
 - Evidence: https://github.com/PaulAduGyamfi/fde-portfolio/commit/b5e10138049804ec6af1cbb532afd180370cd6fd
 - Open, carried to Day 7: create_draft_reply doesn't check account existence before storing a draft.
+
+## Day 7 — 2026-09-04 — Dependency injection and middleware, external API timeouts and retries, GitHub import
+- Artifact: 01-caseflow-agent/caseflow (api.py, external.py, extract.py)
+- Built: require_api_key dependecy injection + add_run_id middleware, wired into /extract, /import/github; 
+  fetch_json() with classified retries + backoff; /import/github endpoint.
+- FDE lesson: not all failures deserve the same response — a 503 or timeout is transient and worth
+  retrying, a 404 is permanent and retrying it just wastes time confirming what one attempt already
+  told you. Classify before you retry, don't retry everything uniformly.
+- Evidence: https://github.com/PaulAduGyamfi/fde-portfolio/commit/4efba22144be1d4c8a8d366f26b8404c510a482e
