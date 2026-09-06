@@ -107,3 +107,17 @@ Claim: EmailIn/Extraction contract (schemas.py) written and committed before ext
   retrying, a 404 is permanent and retrying it just wastes time confirming what one attempt already
   told you. Classify before you retry, don't retry everything uniformly.
 - Evidence: https://github.com/PaulAduGyamfi/fde-portfolio/commit/4efba22144be1d4c8a8d366f26b8404c510a482e
+
+## Day 8 — 2026-09-05 — External retry tests, investigator trace review
+- Artifact: 01-caseflow-agent (tests/test_external.py, evals/tool_cases_v1.md)
+- Fixed fetch_json's dependency-injection gap (optional client param) so it's testable without hitting
+  the real network; wrote test_retries_on_503_then_succeeds and test_404_is_raised_immediately_with_no_retry
+  using httpx.MockTransport. Removed the redundant manual RETRYABLE check, confirmed raise_for_status()
+  alone covers both branches by tracing 503/404/200 through the simplified function.
+- Ran the Day 6 investigator against 10 scenarios in tool_cases_v1.md
+- Result: evals/tool_cases_v1.md
+- FDE lesson: code that builds its own dependencies internally (fetch_json creating its own HTTP client)
+  can't be tested without hitting the real network; accepting the dependency as an optional parameter,
+  defaulting to the real thing, makes it swappable for a fake one in tests without changing any existing
+  caller's behavior.
+- Evidence: https://github.com/PaulAduGyamfi/fde-portfolio/commit/211a4708233803ae3a42cd76bfdf6473c20ca453
