@@ -1,7 +1,9 @@
+import sys
 from agents import Agent, Runner, function_tool
-from .schemas import EmailIn, Extraction
-from .tools import get_account, list_open_cases, create_draft_reply
-from . import llm #noqa
+from schemas import EmailIn, Extraction
+from tools import get_account, list_open_cases, create_draft_reply
+import llm #noqa
+import asyncio
 
 extractor = Agent( 
     name="CaseFlow Extractor", 
@@ -49,4 +51,11 @@ async def extract_github_issue(issue):
         )
     return (await extract(email)).model_dump()
 
-    
+async def investigate(text: str):
+    return await Runner.run(investigator, text, max_turns=6)
+
+if __name__ == "__main__":
+    result = asyncio.run(investigate(sys.argv[1] if len(sys.argv) > 1 else "What plan is account A-1001 on?"))
+    print("FINAL:", result.final_output)
+    for item in result.new_items:
+        print(type(item).__name__, getattr(item, "raw_item", ""))
