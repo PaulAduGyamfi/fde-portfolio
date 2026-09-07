@@ -121,3 +121,16 @@ Claim: EmailIn/Extraction contract (schemas.py) written and committed before ext
   defaulting to the real thing, makes it swappable for a fake one in tests without changing any existing
   caller's behavior.
 - Evidence: https://github.com/PaulAduGyamfi/fde-portfolio/commit/211a4708233803ae3a42cd76bfdf6473c20ca453
+
+## Day 9 — 2026-09-06 — Deterministic workflow, tests, Dockerfile
+- Artifact: 01-caseflow-agent (caseflow/workflow.py, tests/test_workflow.py, Dockerfile)
+- Set up pytest-asyncio so async test functions actually run.
+- Wrote and fixed 4 workflow tests (escalated, needs_information, blocked_by_policy, awaiting_approval)
+  via monkeypatch on extract and draft_reply — no real model calls, zero API cost. 
+- Test result: 4/4 passing.
+- Confirmed docker build succeeds; container runs via `docker run --rm -p 8000:8000
+  --env-file .env caseflow:v1`; /health returns 200 from inside the container;
+- FDE lesson: code owns the sequence — validate, extract, fetch facts, draft, check policy, queue for
+  approval — and the model is scoped to exactly two narrow steps (extraction, drafting) inside that
+  fixed structure. The model never decides what happens next; the workflow does.
+- Evidence: https://github.com/PaulAduGyamfi/fde-portfolio/commit/3910a1a820856f9afcec8a6f739783299fc7abbc
