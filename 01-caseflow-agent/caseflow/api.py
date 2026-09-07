@@ -6,6 +6,7 @@ from fastapi import FastAPI, Request, Depends, HTTPException, Header
 from .schemas import EmailIn, Extraction 
 from .extract import extract, extract_github_issue
 from .external import fetch_json
+from .workflow import handle
 
 
 app = FastAPI(title="CaseFlow")
@@ -32,6 +33,11 @@ def health():
 @app.post("/extract", response_model=Extraction, dependencies=[Depends(require_api_key)])
 async def extract_email(email: EmailIn):
     return await extract(email)
+
+@app.post("/handle", dependencies=[Depends(require_api_key)])
+async def extract_email(email: EmailIn):
+    results = await handle(email)
+    return results
 
 @app.get("/import/github")
 async def import_github(owner: str, repo: str):

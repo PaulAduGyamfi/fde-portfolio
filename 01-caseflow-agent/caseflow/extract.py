@@ -1,8 +1,8 @@
 import sys
 from agents import Agent, Runner, function_tool
-from schemas import EmailIn, Extraction
-from tools import get_account, list_open_cases, create_draft_reply
-import llm #noqa
+from .schemas import EmailIn, Extraction
+from .tools import get_account, list_open_cases, create_draft_reply
+from . import llm #noqa
 import asyncio
 
 extractor = Agent( 
