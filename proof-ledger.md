@@ -157,3 +157,28 @@ Claim: EmailIn/Extraction contract (schemas.py) written and committed before ext
   reaches — one in an auth failure branch, one in an import-order side effect that only showed up
   if the ordering changed. Neither was found by using the system; both were found by auditing it.
 - Evidence: https://github.com/PaulAduGyamfi/fde-portfolio/commit/6a8e036ea0d164182de900af6c7142f5052acfd1
+
+## Day 10 (Part 2) — 2026-10-22 — Account ID normalization moved to code; hypothesis tested and rejected
+- Artifact: 01-caseflow-agent (caseflow/accounts.py, caseflow/extract.py, tests/test_accounts.py,
+  evals/iteration_3_v1.txt)
+- Built: normalize_account_id() — a pure function that canonicalizes whatever the model returns to
+  ACC-<digits>. Removed the ~40-word formatting instruction from the extractor prompt. The model
+  now finds the account reference; code formats it. 8 parametrized tests, including None and
+  unparseable input, which must stay None so the needs_information branch in handle() still works.
+- Result: account_id 100% and now structural — the model no longer formats it, so the field cannot
+  regress. urgency 75->80%, needs_human_review 75->80%: one case each, which is noise at n=20.
+- Hypothesis NOT supported: the prediction was that removing the formatting instruction would
+  recover the intent accuracy lost in iteration 2. Intent stayed flat at 80%.
+- The finding is in the failure set, not the percentage. Iteration 2 failed intent on 005, 011, 012,
+  015. Iteration 3 failed on 002, 005, 011, 015 — same count, different set. 012 fixed, 002 broke,
+  with no instruction change touching either. Across all four runs only 011 (billing vs technical)
+  and 015 (access vs other, adversarial) fail every time; 002, 005 and 012 flip.
+- Calibration, as a side effect: the >=0.85 bucket now reads 15/19 = 78.9% intent accuracy, where
+  calibration_check read 19/19 and had no variance to measure. High confidence is wrong on intent
+  roughly one time in five. This is the first run where the bucket measured anything.
+- FDE lesson: intent carries about +/-10 points of noise at n=20, which is the same size as the
+  regression I was trying to explain — so iteration 2's drop may have been variance, not attention
+  dilution, and single runs cannot tell the two apart. The eval is good enough to catch a large
+  regression and not good enough to attribute a small one. Confirming that is worth more than the
+  percentage.
+- Evidence: https://github.com/PaulAduGyamfi/fde-portfolio/commit/c6411de6ec8599465ff997ddf1d2f8489bd169e7
