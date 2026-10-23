@@ -182,6 +182,7 @@ Claim: EmailIn/Extraction contract (schemas.py) written and committed before ext
   regression and not good enough to attribute a small one. Confirming that is worth more than the
   percentage.
 - Evidence: https://github.com/PaulAduGyamfi/fde-portfolio/commit/c6411de6ec8599465ff997ddf1d2f8489bd169e7
+
 ## Day 12 — 2026-10-23 — Eval as a CI gate
 - Artifact: fde-portfolio (.github/workflows/ci.yml, 01-caseflow-agent/evals/thresholds.json,
   evals/run_extraction_eval.py)
@@ -206,3 +207,11 @@ Claim: EmailIn/Extraction contract (schemas.py) written and committed before ext
 - Known limit: the gate spends real model calls on every push, which is non-deterministic and does
   not scale. At volume this splits into a small cached subset per PR and the full set nightly.
 - Evidence: https://github.com/PaulAduGyamfi/fde-portfolio/commit/e7e667fe3b72013c768c47f56965759faa5d26ad
+
+## Day 12 (Part 2) — 2026-10-23 — Full jitter on external retries
+- Artifact: 01-caseflow-agent (caseflow/external.py)
+- Changed: fetch_json sleeps a random point in [0, delay) instead of exactly delay.
+- Test result: existing MockTransport tests pass unchanged — only timing moved.
+- FDE lesson: backoff alone makes concurrent callers retry in lockstep against a dependency that's
+  already failing. Jitter spreads them. The bug only shows under load, so tests can't catch it.
+- Evidence: https://github.com/PaulAduGyamfi/fde-portfolio/commit/51d7ceaf26b7fd31b47b794b9f8e8c62d5c9c822
