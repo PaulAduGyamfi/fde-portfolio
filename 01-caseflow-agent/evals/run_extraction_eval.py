@@ -25,7 +25,8 @@ async def main():
         if row: failures.append((case["id"], case["tags"], actual["confidence"], row)) 
     n = len(cases)
     print(f"cases={n}")
-    for f in FIELDS: print(f"{f}_accuracy={correct[f]/n:.1%}") 
+    accuracy = {f: correct[f] / n for f in FIELDS}
+    for f in FIELDS: print(f"{f}_accuracy={correct[f]:.1%}") 
     print("\nFAILURES (id, tags, confidence)")
     for f in failures: print(*f)
 
@@ -54,4 +55,29 @@ async def main():
         else:
             print(f"{name}: {correct}/{total} = {correct/total:.1%}")
 
-asyncio.run(main())
+    return accuracy
+
+def gate(accuracy: dict[str, float]) -> int:
+    """
+    Compare accuracy against evals/thresholds.json.
+    Returns a process exit code: 0 when every field clears its floor, 1 otherwise.
+    """
+    thresholds = {k: v for k, v in json.load(open("thresholds.json")).items()
+                  if not k.startswith("_")}
+    breaches = [(f, accuracy[f], floor)
+                for f, floor in thresholds.items()
+                if accuracy.get(f, 0) < floor]
+
+    print("\nGATE")
+    if not breaches:
+        print("pass — every field at or above its floor")
+        return 0
+    for f, got, floor in breaches:
+        print(f"FAIL {f}: {got:.1%} below floor {floor:.1%}")
+    return 1
+
+
+if __name__ == "__main__":
+    accuracy = asyncio.run(main())
+    if "--gate" in sys.argv:
+        raise SystemExit(gate(accuracy))

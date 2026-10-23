@@ -1,0 +1,7 @@
+{
+    "_comment": "Floors, not targets. Set from iteration 3 minus a 5-point tolerance for run-to-run variance across 20 cases. A change that drops below these fails CI.",
+    "intent": 0.80,
+    "urgency": 0.70,
+    "account_id": 1.00,
+    "needs_human_review": 0.70
+  }
