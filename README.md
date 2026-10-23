@@ -12,8 +12,9 @@ model is probabilistic and can't guarantee that. The FastAPI + Pydantic boundary
 inference is introduced only where interpretation of language is genuinely required.
 
 ## Where model inference is used
-Two agents: (1) the extractor, reading a raw ticket into structured fields; (2) the investigator,
-deciding whether to call get_account / list_open_cases before drafting a reply.
+Three agents: an extractor (reads a ticket into the typed schema), a drafter (writes a reply from supplied facts only), and an investigator (decides for itself which read tools to call).
+
+The investigator is NOT in the /handle path. handle() calls get_account and list_open_cases deterministically, because on a knowable path an agent choosing between two tools buys latency and nondeterminism for nothing. The investigator is reachable on its own for open-ended lookups, where the number of steps genuinely isn't known in advance.
 
 ## Structured-output contract
 `Extraction` (Pydantic): intent, urgency, account_id (nullable), requested_action, needs_human_review,

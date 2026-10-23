@@ -134,3 +134,26 @@ Claim: EmailIn/Extraction contract (schemas.py) written and committed before ext
   approval — and the model is scoped to exactly two narrow steps (extraction, drafting) inside that
   fixed structure. The model never decides what happens next; the workflow does.
 - Evidence: https://github.com/PaulAduGyamfi/fde-portfolio/commit/3910a1a820856f9afcec8a6f739783299fc7abbc
+
+## Day 10 — 2026-10-22 — API surface audit: auth bug, dead endpoint, implicit config
+- Artifact: 01-caseflow-agent (caseflow/api.py, caseflow/llm.py, tests/test_api.py, .env.example, README.md)
+- Bug fixed: require_api_key raised HTTPException(status=401) — the parameter is status_code.
+  Every rejected key raised TypeError and surfaced as a 500, not a 401. Live since Day 7 and never
+  observed, because the happy path never calls the auth failure branch.
+- Correction to Day 7's entry: that entry claimed auth was wired into /import/github. It was not —
+  the route had no dependency and would run five model calls for an unauthenticated caller. Now fixed.
+- Removed: POST /extract. It appeared exactly once in the codebase, its own definition — no caller,
+  no test, and it returned the raw extraction of a customer ticket to any key holder. The extract()
+  function stays; it is the seam the eval imports and measures. What went was the HTTP wrapper.
+- Config fixed: api.py asserted API_KEY but never called load_dotenv(). The assert only passed
+  because importing .extract pulled in llm.py, which called load_dotenv() as a side effect. Correct
+  by accident, and it would have kept working in a container where the environment supplies the
+  variables directly — so the fragility would only have surfaced when someone reordered an import.
+  api.py now loads its own config. Added .env.example, which did not exist.
+- Tests: tests/test_api.py was empty. Now 4 tests — wrong key, missing key, /import/github
+  unauthenticated, /health open. No model calls.
+- FDE lesson: the happy path never touches your error handling, so an untested API layer means
+  untested failure handling by definition. Both defects here lived in code that normal use never
+  reaches — one in an auth failure branch, one in an import-order side effect that only showed up
+  if the ordering changed. Neither was found by using the system; both were found by auditing it.
+- Evidence: https://github.com/PaulAduGyamfi/fde-portfolio/commit/6a8e036ea0d164182de900af6c7142f5052acfd1
