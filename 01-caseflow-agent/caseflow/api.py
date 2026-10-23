@@ -3,20 +3,21 @@ import os
 import asyncio
 from dotenv import load_dotenv
 from fastapi import FastAPI, Request, Depends, HTTPException, Header
-from .schemas import EmailIn, Extraction 
-from .extract import extract, extract_github_issue
+from .schemas import EmailIn 
+from .extract import extract_github_issue
 from .external import fetch_json
 from .workflow import handle
 
-
-app = FastAPI(title="CaseFlow")
+load_dotenv()
 
 assert os.getenv("API_KEY"), "API_KEY missing from .env"
 API_KEY = os.getenv("API_KEY")
 
+app = FastAPI(title="CaseFlow")
+
 def require_api_key(x_api_key: str = Header(...)):
     if x_api_key != API_KEY:
-        raise HTTPException(status=401, detail="invalid api key")
+        raise HTTPException(status_code=401, detail="invalid api key")
 
 @app.middleware("http")
 async def add_run_id(request: Request, call_next):
@@ -30,16 +31,12 @@ async def add_run_id(request: Request, call_next):
 def health():
     return {"status": "ok"}
 
-@app.post("/extract", response_model=Extraction, dependencies=[Depends(require_api_key)])
-async def extract_email(email: EmailIn):
-    return await extract(email)
-
 @app.post("/handle", dependencies=[Depends(require_api_key)])
 async def extract_email(email: EmailIn):
     results = await handle(email)
     return results
 
-@app.get("/import/github")
+@app.get("/import/github", dependencies=[Depends(require_api_key)])
 async def import_github(owner: str, repo: str):
     issues = await fetch_json(f"https://api.github.com/repos/{owner}/{repo}/issues")
     results = await asyncio.gather(*[extract_github_issue(issue) for issue in issues[:5]])
