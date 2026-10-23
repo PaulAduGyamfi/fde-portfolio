@@ -27,6 +27,11 @@ jobs:
         with:
           python-version: "3.12"
       - run: pip install -r 01-caseflow-agent/requirements.txt
+      - run: pytest -q
+        working-directory: 01-caseflow-agent
+        env:
+          OPENAI_API_KEY: not-used-tests-monkeypatch-the-model
+          API_KEY: not-used-tests-only
       - name: extraction eval (gated)
         env:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}

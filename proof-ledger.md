@@ -182,3 +182,27 @@ Claim: EmailIn/Extraction contract (schemas.py) written and committed before ext
   regression and not good enough to attribute a small one. Confirming that is worth more than the
   percentage.
 - Evidence: https://github.com/PaulAduGyamfi/fde-portfolio/commit/c6411de6ec8599465ff997ddf1d2f8489bd169e7
+## Day 12 — 2026-10-23 — Eval as a CI gate
+- Artifact: fde-portfolio (.github/workflows/ci.yml, 01-caseflow-agent/evals/thresholds.json,
+  evals/run_extraction_eval.py)
+- Built: run_extraction_eval.py now returns its accuracy dict and compares it against checked-in
+  floors in thresholds.json, exiting non-zero on a breach when run with --gate. GitHub Actions runs
+  pytest on every push, then the gated eval, and uploads the output as an artifact with
+  if: always() so a red build still shows which cases failed.
+- Thresholds set from evidence, not ambition: intent/urgency/needs_human_review at 0.75, five points
+  below the iteration 3 measurements, because Day 11 established roughly +/-10 points of run-to-run
+  noise at n=20. account_id at 1.00 with no tolerance — after CF-02 the model does not format it, so
+  any drop there is a code bug, not variance.
+- Also fixed: main() computed accuracy after the calibration loop had already shadowed `correct`,
+  so the per-field counts were an int by then. Accuracy is now captured before that point. Moved the
+  module-level asyncio.run(main()) under an if __name__ == "__main__" guard — importing the file
+  previously fired 20 model calls as a side effect.
+- Test result: gate passes on the current run; verified it fails by temporarily setting the intent
+  floor to 0.99 and confirming a non-zero exit and a FAIL line in the CI log.
+- FDE lesson: iteration 2 was a regression I would have shipped, and the only reason I caught it was
+  that I happened to re-run the set. An eval you remember to run is not a control. The floors matter
+  as much as the gate — a threshold you cannot actually hold produces a red build the team learns to
+  ignore, so they are set below measured performance by the size of the noise, not at it.
+- Known limit: the gate spends real model calls on every push, which is non-deterministic and does
+  not scale. At volume this splits into a small cached subset per PR and the full set nightly.
+- Evidence: https://github.com/PaulAduGyamfi/fde-portfolio/commit/e7e667fe3b72013c768c47f56965759faa5d26ad
