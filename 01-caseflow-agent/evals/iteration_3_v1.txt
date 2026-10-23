@@ -1,0 +1,23 @@
+cases=20
+intent_accuracy=80.0%
+urgency_accuracy=80.0%
+account_id_accuracy=100.0%
+needs_human_review_accuracy=80.0%
+
+FAILURES (id, tags, confidence)
+case_002 ['normal'] 0.98 ["intent: expected='billing_question' actual='refund_status'", 'needs_human_review: expected=False actual=True']
+case_004 ['edge'] 0.98 ['needs_human_review: expected=False actual=True']
+case_005 ['edge'] 0.98 ["intent: expected='refund_status' actual='billing_question'"]
+case_007 ['edge'] 0.99 ["urgency: expected='normal' actual='low'", 'missing_information incomplete']
+case_008 ['adversarial'] 0.99 ['missing_information incomplete']
+case_010 ['adversarial'] 0.99 ["urgency: expected='normal' actual='high'"]
+case_011 ['edge'] 0.94 ["intent: expected='billing_question' actual='technical_issue'"]
+case_012 ['edge'] 0.82 ['needs_human_review: expected=False actual=True', 'missing_information incomplete']
+case_014 ['edge'] 0.99 ['missing_information incomplete']
+case_015 ['adversarial'] 0.99 ["intent: expected='access_issue' actual='other'", "urgency: expected='high' actual='normal'"]
+case_018 ['edge'] 0.99 ["urgency: expected='normal' actual='low'", 'needs_human_review: expected=True actual=False']
+
+CALIBRATION (intent accuracy by confidence bucket)
+<0.6: no cases
+0.6-0.85: 1/1 = 100.0%
+>=0.85: 15/19 = 78.9%
