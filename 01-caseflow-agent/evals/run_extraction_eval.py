@@ -26,7 +26,7 @@ async def main():
     n = len(cases)
     print(f"cases={n}")
     accuracy = {f: correct[f] / n for f in FIELDS}
-    for f in FIELDS: print(f"{f}_accuracy={correct[f]:.1%}") 
+    for f in FIELDS: print(f"{f}_accuracy={accuracy[f]:.1%}") 
     print("\nFAILURES (id, tags, confidence)")
     for f in failures: print(*f)
 
