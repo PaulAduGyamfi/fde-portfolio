@@ -1,4 +1,4 @@
-import asyncio, httpx
+import asyncio, random, httpx
 
 RETRYABLE = {408, 429, 500, 502, 503, 504}
 
@@ -19,7 +19,8 @@ async def fetch_json(url: str, attempts: int = 3, timeout: float = 5.0, client: 
                     raise
                 if i == attempts - 1:
                     raise
-                await asyncio.sleep(delay); delay *= 2
+                await asyncio.sleep(random.uniform(0, delay)); # jitter + back-off
+                delay *= 2
     finally:
         if no_client_provided:
             await client.aclose()
